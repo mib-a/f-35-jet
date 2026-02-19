@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>F-35 Tactical Interface</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background: #000; color: #00FF41; font-family: monospace; margin: 0; }
+        .hud-border { border: 2px solid #00FF41; box-shadow: 0 0 10px #00FF41; }
+        .hidden { display: none !important; }
+        input { background: transparent; border-bottom: 1px solid #00FF41; color: #00FF41; outline: none; width: 100%; }
+        button:hover { background: #00FF41; color: #000; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+<div id="p1" class="h-screen flex flex-col items-center justify-center p-10 text-center">
+    <h1 class="text-4xl font-bold mb-4">F-35 MISSION START</h1>
+    <p class="mb-10 opacity-70">"NAME" DEPARTMENT AUTHENTICATION REQUIRED</p>
+    <button onclick="go()" class="hud-border px-10 py-5 text-xl">INITIALIZE COCKPIT</button>
+</div>
+
+<div id="p2" class="hidden min-h-screen p-5 flex flex-col gap-5">
+    <div class="flex justify-between border-b border-[#00FF41] pb-2 text-xs">
+        <span>STATUS: SUPERSONIC</span>
+        <span>PILOT: MS. SHAIARA</span>
+        <span id="timer">00:00:00</span>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div class="hud-border p-5 h-40 flex items-center justify-center text-center italic">
+            <p id="affText">"You're built for the stratosphere."</p>
+        </div>
+
+        <div class="hud-border p-5">
+            <h2 class="text-center mb-4 font-bold">FLIGHT CALCULATOR</h2>
+            <input id="v" type="number" placeholder="Velocity (m/s)" class="mb-4 p-2">
+            <input id="l" type="number" placeholder="Length (m)" class="mb-4 p-2">
+            <button onclick="cal()" class="w-full border border-[#00FF41] py-2 mt-2">CALCULATE</button>
+            <div id="out" class="mt-4 text-xs hidden">
+                <p id="f"></p>
+                <p id="m"></p>
+            </div>
+        </div>
+
+        <div class="hud-border p-5 flex flex-col justify-between">
+            <p id="punText" class="text-sm">Ready for system check...</p>
+            <button onclick="nextPun()" class="text-[10px] border border-[#00FF41] py-1">SYSTEM CHECK</button>
+        </div>
+    </div>
+    
+    <div class="mt-20 text-center opacity-30 text-[10px]">BUET NAME STRATEGIC UNIT | 2026</div>
+</div>
+
+<script>
+    function go() {
+        document.getElementById('p1').classList.add('hidden');
+        document.getElementById('p2').classList.remove('hidden');
+    }
+
+    function cal() {
+        const v = parseFloat(document.getElementById('v').value);
+        const l = parseFloat(document.getElementById('l').value);
+        if(!v || !l) return;
+        const f = (v / Math.sqrt(9.81 * l)).toFixed(3);
+        const m = (v / 343).toFixed(4);
+        document.getElementById('out').classList.remove('hidden');
+        document.getElementById('f').innerText = "FROUDE NO: " + f;
+        document.getElementById('m').innerText = "MACH NO: " + m;
+    }
+
+    const ps = [
+        "You're smarter than a stealth fighter's computer frrr👌",
+        "BUET is tough, but you're supersonic, young lady!!🙏",
+        "Alvi's waiting for his Iftar invite😋.",
+        "Thrust-to-weight ratio: Infinite...you rock!!😳"
+    ];
+
+    function nextPun() {
+        document.getElementById('punText').innerText = ps[Math.floor(Math.random()*ps.length)];
+    }
+
+    setInterval(() => {
+        const n = new Date();
+        document.getElementById('timer').innerText = n.toLocaleTimeString();
+    }, 1000);
+</script>
+
+</body>
+</html>
